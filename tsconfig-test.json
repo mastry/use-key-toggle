@@ -1,0 +1,23 @@
+{
+    "extends": "../tsconfig-base",
+    "references": [
+        {
+            "path": "../src"
+        },
+    ],
+    "include": [
+        "*.test.tsx"
+    ],
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "bin",
+        "paths": {
+            "lib": [
+                "../lib"
+            ]
+        },
+        "jsx": "react",
+        "declaration": false,
+        "declarationMap": false,
+    }
+}

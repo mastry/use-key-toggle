@@ -1,0 +1,6 @@
+node_modules
+lib
+
+__tests__/*.js
+__tests__/*.map
+__tests__/*.d.ts

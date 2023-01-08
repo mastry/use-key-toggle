@@ -1,0 +1,38 @@
+{
+  "name": "use-key-toggle",
+  "version": "1.0.0",
+  "description": "Toggle state with a key press",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "publish-local": "tsc && npm publish --registry http://localhost:4873/"
+  },
+  "author": "Jeff Mastry",
+  "license": "MIT",
+  "homepage": "https://github.com/mastry/use-key-toggle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mastry/use-key-toggle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mastry/use-key-toggle/issues"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.2.5",
+    "@types/react": "^18.0.26",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "react-dom": "^18.2.0",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "react": "^18.2.0"
+  }
+}
