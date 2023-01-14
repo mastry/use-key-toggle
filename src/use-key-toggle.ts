@@ -1,10 +1,33 @@
 import { useState, useEffect } from 'react';
 
-export interface KeyToggleOptions {
-    altkey: boolean
-    ctrlKey: boolean
-    metaKey: boolean
-    shiftKey: boolean
+export class KeyToggleOptions {
+    private _altkey: boolean
+    private _ctrlKey: boolean
+    private _metaKey: boolean
+    private _shiftKey: boolean
+
+    constructor(altkey, ctrlkey, shiftkey) {
+        this._altkey = altkey
+        this._ctrlKey = ctrlkey
+        this._metaKey = ctrlkey
+        this._shiftKey = shiftkey
+    }
+
+    get altKey() {
+        return this._altkey
+    }
+
+    get ctrlKey() {
+        return this._ctrlKey
+    }
+
+    get metaKey() {
+        return this._ctrlKey
+    }
+
+    get shiftKey() {
+        return this._shiftKey
+    }
 }
 
 export function useKeyToggle(keyCode: string, func?: (isVisible: boolean) => void, options?: KeyToggleOptions): [boolean, React.Dispatch<React.SetStateAction<boolean>>] {
