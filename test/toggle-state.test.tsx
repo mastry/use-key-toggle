@@ -4,9 +4,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup'
 
-const PressControlKThenRelease = '{Control>}K{/Control}'
-
 import { useKeyToggle } from '../src'
+
+const PressControlKThenRelease = '{Control>}K{/Control}'
 
 const TestComponent: React.FC = () => {
   const [isToggled] = useKeyToggle('KeyK')
