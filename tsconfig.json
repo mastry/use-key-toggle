@@ -9,7 +9,8 @@
     "declaration": true, /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "jsx": "react"
   },
   "include": [
     "src/**/*"
