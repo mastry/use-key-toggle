@@ -1,49 +1,57 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export class KeyToggleOptions {
-    private _altkey: boolean
-    private _ctrlKey: boolean
-    private _metaKey: boolean
-    private _shiftKey: boolean
-
-    constructor(altkey, ctrlkey, shiftkey) {
-        this._altkey = altkey
-        this._ctrlKey = ctrlkey
-        this._metaKey = ctrlkey
-        this._shiftKey = shiftkey
-    }
-
-    get altKey() {
-        return this._altkey
-    }
-
-    get ctrlKey() {
-        return this._ctrlKey
-    }
-
-    get metaKey() {
-        return this._ctrlKey
-    }
-
-    get shiftKey() {
-        return this._shiftKey
-    }
+export enum ModifierKey {
+    None = 0x0,
+    Alt = 0x1,
+    Ctrl = 0x2,
+    Shift = 0x4,
 }
 
-export function useKeyToggle(keyCode: string, func?: (isVisible: boolean) => void, options?: KeyToggleOptions): [boolean, React.Dispatch<React.SetStateAction<boolean>>] {
+export type SetToggleStateFunc = React.Dispatch<React.SetStateAction<boolean>>
+
+export function useKeyToggle(
+    keyCode: string,
+    modifierKey: ModifierKey,
+    callback?: (isVisible: boolean) => void): [boolean, SetToggleStateFunc] {
+
     const [isOn, setIsOn] = useState(false)
 
     useEffect(() => {
         const toggleState = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.code === keyCode) {
+
+            if (e.code !== keyCode) {
+                return;
+            }
+
+            let shouldHandle = false
+
+            if (modifierKey == ModifierKey.None && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+                shouldHandle = true
+            }
+
+            else if (modifierKey === ModifierKey.Alt && e.altKey && !e.ctrlKey && !e.shiftKey) {
+                shouldHandle = true
+            }
+
+            else if (modifierKey === ModifierKey.Ctrl && !e.altKey && e.ctrlKey && !e.shiftKey) {
+                shouldHandle = true
+            }
+
+            else if (modifierKey === ModifierKey.Shift && !e.altKey && !e.ctrlKey && e.shiftKey) {
+                shouldHandle = true
+            }
+
+            if (shouldHandle) {
                 e.preventDefault();
-                if (func) {
-                    func(!isOn);
+                if (callback) {
+                    callback(!isOn);
                 }
                 setIsOn(!isOn);
             }
         }
+
         document.addEventListener('keydown', toggleState);
+
         return () => document.removeEventListener('keydown', toggleState);
     });
 

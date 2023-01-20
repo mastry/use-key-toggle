@@ -1,1 +1,1 @@
-export { useKeyToggle, KeyToggleOptions } from "./use-key-toggle";
+export { useKeyToggle, ModifierKey } from "./use-key-toggle";

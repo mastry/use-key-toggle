@@ -5,11 +5,12 @@ import userEvent from '@testing-library/user-event'
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup'
 
 import { useKeyToggle } from '../src'
+import { ModifierKey } from '../src/use-key-toggle'
 
 const PressControlKThenRelease = '{Control>}K{/Control}'
 
 const TestComponent: React.FC = () => {
-  const [isToggled] = useKeyToggle('KeyK')
+  const [isToggled] = useKeyToggle('KeyK', ModifierKey.Ctrl)
 
   return <div id='output'>
     {isToggled ? 'on' : 'off'}
