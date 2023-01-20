@@ -8,12 +8,20 @@ import { useKeyToggle } from '../src'
 import { ModifierKey } from '../src/use-key-toggle'
 
 const PressControlKThenRelease = '{Control>}K{/Control}'
+const PressShiftKThenRelease = '{Shift>}K{/Shift}'
+const PressAltKThenRelease = '{Alt>}K{/Alt}'
 
-const TestComponent: React.FC = () => {
-  const [isToggled] = useKeyToggle('KeyK', ModifierKey.Ctrl)
+interface TestComponentProps {
+  name: string
+  keyCode: string
+  modifierKey: ModifierKey
+}
 
-  return <div id='output'>
-    {isToggled ? 'on' : 'off'}
+const TestComponent: React.FC<TestComponentProps> = (props) => {
+  const [isToggled] = useKeyToggle(props.keyCode, props.modifierKey)
+
+  return <div>
+    {`${props.name} = ${isToggled ? 'on' : 'off'}`}
   </div>
 }
 
@@ -22,24 +30,49 @@ describe('Toggle State', () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    render(<TestComponent />)
   })
 
   it('is initially false', async () => {
-    expect(screen.getByText('off')).not.toBeNull()
+    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
+    expect(screen.getByText('control = off')).not.toBeNull()
   })
 
   it('is true after the key combo is pressed once', async () => {
+    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
     await user.keyboard(PressControlKThenRelease)
-
-    expect(screen.getByText('on')).not.toBeNull()
+    expect(screen.getByText('control = on')).not.toBeNull()
   })
 
   it('is false after the key combo is pressed twice', async () => {
-    await user.keyboard(PressControlKThenRelease)
-    expect(screen.getByText('on')).not.toBeNull()
+    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
 
     await user.keyboard(PressControlKThenRelease)
-    expect(screen.getByText('off')).not.toBeNull()
+    expect(screen.getByText('control = on')).not.toBeNull()
+
+    await user.keyboard(PressControlKThenRelease)
+    expect(screen.getByText('control = off')).not.toBeNull()
+  })
+
+  it('toggles with ALT key modifier', async () => {
+    render(<TestComponent name='alt' keyCode='KeyK' modifierKey={ModifierKey.Alt} />)
+
+    await user.keyboard(PressAltKThenRelease)
+    expect(screen.getByText('alt = on')).not.toBeNull()
+
+  })
+
+  it('toggles with SHIFT key modifier', async () => {
+    render(<TestComponent name='shift' keyCode='KeyK' modifierKey={ModifierKey.Shift} />)
+
+    await user.keyboard(PressShiftKThenRelease)
+    expect(screen.getByText('shift = on')).not.toBeNull()
+
+  })
+
+  it('toggles with CONTROL key modifier', async () => {
+    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
+
+    await user.keyboard(PressControlKThenRelease)
+    expect(screen.getByText('control = on')).not.toBeNull()
   })
 })
