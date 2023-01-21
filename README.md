@@ -5,7 +5,7 @@ A simple React hook to toggle a boolean flag with a key press.
 ## Installation
 
 ```sh
-npm i use-key-toggle
+npm i @mastry/use-key-toggle
 ```
 
 ## Usage
