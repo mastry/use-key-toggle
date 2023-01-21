@@ -32,33 +32,14 @@ describe('Toggle State', () => {
     user = userEvent.setup();
   })
 
-  it('is initially false', async () => {
-    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
-    expect(screen.getByText('control = off')).not.toBeNull()
-  })
-
-  it('is true after the key combo is pressed once', async () => {
-    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
-    await user.keyboard(PressControlKThenRelease)
-    expect(screen.getByText('control = on')).not.toBeNull()
-  })
-
-  it('is false after the key combo is pressed twice', async () => {
-    render(<TestComponent name='control' keyCode='KeyK' modifierKey={ModifierKey.Ctrl} />)
-
-    await user.keyboard(PressControlKThenRelease)
-    expect(screen.getByText('control = on')).not.toBeNull()
-
-    await user.keyboard(PressControlKThenRelease)
-    expect(screen.getByText('control = off')).not.toBeNull()
-  })
-
   it('toggles with ALT key modifier', async () => {
     render(<TestComponent name='alt' keyCode='KeyK' modifierKey={ModifierKey.Alt} />)
 
     await user.keyboard(PressAltKThenRelease)
     expect(screen.getByText('alt = on')).not.toBeNull()
 
+    await user.keyboard(PressAltKThenRelease)
+    expect(screen.getByText('alt = off')).not.toBeNull()
   })
 
   it('toggles with SHIFT key modifier', async () => {
@@ -67,6 +48,8 @@ describe('Toggle State', () => {
     await user.keyboard(PressShiftKThenRelease)
     expect(screen.getByText('shift = on')).not.toBeNull()
 
+    await user.keyboard(PressShiftKThenRelease)
+    expect(screen.getByText('shift = off')).not.toBeNull()
   })
 
   it('toggles with CONTROL key modifier', async () => {
@@ -74,5 +57,8 @@ describe('Toggle State', () => {
 
     await user.keyboard(PressControlKThenRelease)
     expect(screen.getByText('control = on')).not.toBeNull()
+
+    await user.keyboard(PressControlKThenRelease)
+    expect(screen.getByText('control = off')).not.toBeNull()
   })
 })
