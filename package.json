@@ -1,5 +1,5 @@
 {
-  "name": "use-key-toggle",
+  "name": "@mastry/use-key-toggle",
   "version": "1.0.0",
   "description": "Toggle state with a key press",
   "main": "lib/index.js",
