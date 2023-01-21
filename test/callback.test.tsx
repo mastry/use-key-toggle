@@ -14,12 +14,12 @@ const testFunction = jest.fn((_: boolean) => { })
 const TestComponent: React.FC = () => {
   const [isToggled] = useKeyToggle('KeyK', ModifierKey.Ctrl, testFunction)
 
-  return <div id='output'>
+  return <div>
     {isToggled ? 'on' : 'off'}
   </div>
 }
 
-describe('Function Call', () => {
+describe('Callback Function', () => {
   let user: UserEvent
 
   beforeEach(() => {
@@ -36,5 +36,4 @@ describe('Function Call', () => {
     await user.keyboard(PressControlKThenRelease)
     expect(testFunction).toBeCalledTimes(1)
   })
-
 })

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export enum ModifierKey {
     None = 0x0,
@@ -7,53 +7,63 @@ export enum ModifierKey {
     Shift = 0x4,
 }
 
-export type SetToggleStateFunc = React.Dispatch<React.SetStateAction<boolean>>
+export type SetToggleStateFunc =
+    (state: boolean, suppressCallback: boolean) => void
+
+export type KeyToggleCallback = (isVisible: boolean) => void
 
 export function useKeyToggle(
     keyCode: string,
     modifierKey: ModifierKey,
-    callback?: (isVisible: boolean) => void): [boolean, SetToggleStateFunc] {
+    callback?: KeyToggleCallback): [boolean, SetToggleStateFunc] {
 
     const [isOn, setIsOn] = useState(false)
 
     useEffect(() => {
-        const toggleState = (e: KeyboardEvent) => {
-
-            if (e.code !== keyCode) {
-                return;
-            }
-
-            let shouldHandle = false
-
-            if (modifierKey == ModifierKey.None && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-                shouldHandle = true
-            }
-
-            else if (modifierKey === ModifierKey.Alt && e.altKey && !e.ctrlKey && !e.shiftKey) {
-                shouldHandle = true
-            }
-
-            else if (modifierKey === ModifierKey.Ctrl && !e.altKey && e.ctrlKey && !e.shiftKey) {
-                shouldHandle = true
-            }
-
-            else if (modifierKey === ModifierKey.Shift && !e.altKey && !e.ctrlKey && e.shiftKey) {
-                shouldHandle = true
-            }
-
-            if (shouldHandle) {
-                e.preventDefault();
-                if (callback) {
-                    callback(!isOn);
-                }
-                setIsOn(!isOn);
-            }
-        }
-
-        document.addEventListener('keydown', toggleState);
-
-        return () => document.removeEventListener('keydown', toggleState);
+        document.addEventListener('keydown', onKeyDown);
+        return () => document.removeEventListener('keydown', onKeyDown);
     });
 
-    return [isOn, setIsOn];
+    return [isOn, _setIsOn];
+
+    function _setIsOn(isOn: boolean, suppressCallback: boolean = false) {
+        setIsOn(isOn);
+        if (callback && !suppressCallback) {
+            callback(isOn);
+        }
+    }
+
+    function onKeyDown(e: KeyboardEvent) {
+
+        if (e.code !== keyCode) {
+            return;
+        }
+
+        let shouldHandle = false
+
+        if (modifierKey == ModifierKey.None && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+            shouldHandle = true
+        }
+
+        else if (modifierKey === ModifierKey.Alt && e.altKey && !e.ctrlKey && !e.shiftKey) {
+            shouldHandle = true
+        }
+
+        else if (modifierKey === ModifierKey.Ctrl && !e.altKey && e.ctrlKey && !e.shiftKey) {
+            shouldHandle = true
+        }
+
+        else if (modifierKey === ModifierKey.Shift && !e.altKey && !e.ctrlKey && e.shiftKey) {
+            shouldHandle = true
+        }
+
+        if (shouldHandle) {
+            e.preventDefault();
+            if (callback) {
+                callback(!isOn);
+            }
+            setIsOn(!isOn);
+        }
+    }
 }
+
